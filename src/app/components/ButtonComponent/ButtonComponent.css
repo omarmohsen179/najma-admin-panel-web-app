@@ -1,0 +1,55 @@
+.site-button-component {
+  color: white;
+
+  transition: all 0.3s ease-in-out;
+  font-size: 16px;
+  line-height: 2.2rem;
+  border: 1px solid #ffffff;
+  outline: unset;
+  width: 100%;
+  min-height: 40px;
+}
+.site-button-component :disabled,
+button[disabled] {
+  background-color: #838383 !important;
+  opacity: 0.5;
+}
+.site-button-component:hover {
+  opacity: 0.8;
+
+  box-shadow: none;
+  color: #fff;
+  outline: none;
+}
+.button-class {
+  background-color: #787878;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  padding: 10;
+}
+.wrapperClass {
+  display: flex;
+}
+._3uApM {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: center;
+  margin-top: 6rem;
+}
+
+#button .button-indicator {
+  height: 32px;
+  width: 32px;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 5px;
+}
+
+.indicators {
+  display: flex;
+  align-items: center;
+}
+.button-component:hover {
+  opacity: 0.5;
+}
