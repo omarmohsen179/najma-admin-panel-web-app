@@ -1,8 +1,13 @@
-# Paste into Plesk → Git → Additional deployment actions (one line).
-# Runs from the deployment directory (e.g. admin.npm.khalidelewa.com).
-# Adjust httpdocs if your document root folder name differs.
+# Copy `git repos\negma-admin\build` → `admin.npm.khalidelewa.com` (site home).
+# First line clears subfolders + files in the site folder; then robocopy mirrors `build` here.
+# `/MIR` also deletes anything on the site that is not in `build`.
 #
-# DISABLE_ESLINT_PLUGIN=true: avoids CRA build failure on Windows when ESLint sees the same
-# path twice with different casing (e.g. C:\Inetpub\... vs C:\inetpub\...) — "Plugin react was conflicted".
-
-npm install --force && npx cross-env DISABLE_ESLINT_PLUGIN=true REACT_APP_API_BASE_URL2=http://localhost:5000 REACT_APP_API_BASE_URL=https://clinic-api.khalidelewa.com REACT_APP_IMAGE_BASE_URL=http://localhost:5000 REACT_APP_ENV=negma REACT_APP_GOOGLE_SHEET_CORS_PROXY="https://corsproxy.io/?" npm run build && xcopy /E /Y build\* httpdocs\
+# Paste ONE line that matches where Plesk runs the action (see deploy log working directory).
+#
+# A) Runs from Home\admin.npm.khalidelewa.com (your earlier logs looked like this):
+for /d %p in (*) do @rmdir /S /Q "%p" 2>nul & del /F /Q * 2>nul & robocopy "..\git repos\negma-admin\build" . /MIR /E /NFL /NDL /NJH /NJS /nc /ns /np & if errorlevel 8 (exit /b 1) else (exit /b 0)
+#
+# B) Runs from Home\git repos\negma-admin (repo root after Git pull):
+# robocopy build "..\..\admin.npm.khalidelewa.com" /MIR /E /NFL /NDL /NJH /NJS /nc /ns /np & if errorlevel 8 (exit /b 1) else (exit /b 0)
+#
+# If (A) fails with path not found, try (B). Point document root to where index.html lands (often site root or httpdocs).
