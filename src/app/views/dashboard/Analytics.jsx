@@ -521,12 +521,12 @@ const capabilities = [
     bg: "linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%)",
     iconBg: "#1565c0",
     bullets: [
-      "Add real estate projects and individual units (Clinic, Shop, Office, Hotel Apartment)",
-      "Upload multiple photos per unit with gallery management",
-      "Set unit price, area, floor, and custom attributes",
-      "Block or unblock units to prevent accidental reservations",
-      "Track full status lifecycle: Available → Reserved → Sold",
-      "Filter and search across all units by type, status, or project",
+      "Add real estate projects and individual units — Clinic, Shop, Office, or Hotel Apartment",
+      "Upload multiple photos per unit so sales agents can present them to clients",
+      "Set unit price, area, floor, and other details",
+      "Block a unit temporarily to prevent it from being reserved",
+      "Track each unit's status: Available, Reserved, or Sold",
+      "Search and filter units by type, status, or project at any time",
     ],
   },
   {
@@ -536,12 +536,12 @@ const capabilities = [
     bg: "linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%)",
     iconBg: "#2e7d32",
     bullets: [
-      "Create a new reservation linked to a unit in seconds",
-      "Add multiple co-owners per reservation with individual ownership %",
-      "Choose payment method: Cash or Installment",
-      "Upload signed reservation form and down payment images",
-      "Push through a multi-admin approval chain",
-      "Mark reservation as Confirmed, then Purchased when complete",
+      "Create a reservation for any available unit in seconds",
+      "Add multiple buyers to share ownership, each with their own percentage",
+      "Choose whether the client pays in full (Cash) or in installments",
+      "Upload the signed reservation form and any required payment documents",
+      "Send the reservation through the admin approval steps",
+      "Mark the reservation as Confirmed and later as Sold once complete",
     ],
   },
   {
@@ -551,27 +551,27 @@ const capabilities = [
     bg: "linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%)",
     iconBg: "#e65100",
     bullets: [
-      "Auto-generate Arabic PDF contracts filled with real client and unit data",
-      "Supports Cash and Installment contract types with full payment schedules",
-      "8 contract templates for Hotel Apartments (Gold/Silver × Cash/Installment × Nationality)",
-      "Edit any contract visually with CKEditor before generating the PDF",
-      "Per-reservation overrides leave the global template untouched",
-      "Automatic email delivery with contract PDF attached on approval",
+      "Automatically generate a ready-to-send Arabic contract PDF for every reservation",
+      "Client name, unit details, price, and payment terms are filled in automatically",
+      "The right contract layout is chosen automatically based on unit type and payment method",
+      "Edit the contract text visually before generating the PDF — no technical skills needed",
+      "Customizing a contract for one client does not affect any other contracts",
+      "The contract is emailed to the client automatically when the reservation is approved",
     ],
   },
   {
     icon: <PeopleIcon sx={{ fontSize: 40 }} />,
-    title: "Manage Clients & Users",
+    title: "Manage Clients",
     color: "#6a1b9a",
     bg: "linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%)",
     iconBg: "#6a1b9a",
     bullets: [
-      "Create individual client profiles with ID, nationality, and address",
-      "Bulk import hundreds of clients at once from a structured Excel file",
-      "Automatic duplicate detection during import (Name + Email + Phone)",
-      "Assign clients as buyers or co-owners on any reservation",
-      "Link clients to brokers for commission tracking",
-      "Track Egyptian vs Non-Egyptian nationality for contract template selection",
+      "Create client profiles with their personal and contact details",
+      "Import hundreds of clients at once from an Excel file",
+      "The system automatically skips duplicate entries during import",
+      "Add any client as a buyer or co-owner on a reservation",
+      "Link clients to brokers for tracking who introduced them",
+      "Egyptian and non-Egyptian clients are handled with the correct contract type",
     ],
   },
   {
@@ -581,12 +581,12 @@ const capabilities = [
     bg: "linear-gradient(135deg, #e0f2f1 0%, #b2dfdb 100%)",
     iconBg: "#00695c",
     bullets: [
-      "View live session logs submitted by field sales agents",
-      "Track orientation sessions with meeting outcomes and notes",
-      "See lead statuses and conversion progress per agent",
-      "Location data captured for each field session",
-      "Filter activity by agent, date range, or outcome",
-      "Monitor today vs this-week session counts at a glance",
+      "See all client meetings and orientation sessions logged by your sales team",
+      "View notes, outcome, and location for every session",
+      "Monitor how many leads each agent has generated",
+      "Filter activity by agent name, date, or meeting result",
+      "Track today's sessions and this week's total at a glance",
+      "Know which leads are still being followed up and which have converted",
     ],
   },
   {
@@ -596,12 +596,12 @@ const capabilities = [
     bg: "linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%)",
     iconBg: "#b71c1c",
     bullets: [
-      "Create admin accounts with specific roles: Operation, Finance, Customer Support",
-      "Finance role required to upload installment schedules and approve finance steps",
-      "Multi-step approval chains — up to 4 approvals for NPM reservations with feedback",
-      "Assign brokers to admin supervisors for hierarchical management",
-      "Each role sees only the actions and tabs they are authorized to perform",
-      "Audit trail through reservation status history and document uploads",
+      "Create team member accounts and assign each one a specific role",
+      "Each role only sees and can do what they are allowed — nothing more",
+      "Finance staff handle payment schedules and have their own approval step",
+      "Reservations go through multiple admin approvals before being confirmed",
+      "Assign brokers to supervisors so the team hierarchy is always clear",
+      "Every action on a reservation is recorded so nothing is lost",
     ],
   },
 ];
@@ -810,7 +810,7 @@ const workflows = [
       },
       {
         label: "Find or Create the Client",
-        description: "Go to Users → Search for the client by name or phone. If they do not exist yet, click \"New User\" and fill in their details. Note their User ID for the next step.",
+        description: "Go to Users → Search for the client by name or phone. If they do not exist yet, click \"New User\" and fill in their details.",
         chip: "Users Module",
         chipColor: "secondary",
       },
@@ -871,8 +871,8 @@ const workflows = [
         chipColor: "warning",
       },
       {
-        label: "Finance Admin Uploads Schedules",
-        description: "Finance Admin opens the Documents tab → uploads the Installment Schedule JSON and the Maintenance Plan JSON. These files are mandatory before any approval is granted.",
+        label: "Finance Admin Uploads Payment Documents",
+        description: "The Finance Admin opens the Documents tab and uploads the payment schedule and maintenance plan files. These are required before any approval can be given.",
         chip: "Finance Role Required",
         chipColor: "error",
       },
@@ -882,8 +882,8 @@ const workflows = [
       },
       {
         label: "Finance Admin Approves → Email Sent",
-        description: "Finance Admin must approve last. The system verifies schedule documents are present. On approval, email is sent with Contract PDF + Payment Schedule PDF attached.",
-        chip: "Two PDFs Sent",
+        description: "The Finance Admin does the final approval. The system checks that the payment documents are in place, then automatically emails the client with the contract and payment schedule attached.",
+        chip: "Two Documents Sent",
         chipColor: "success",
       },
       {
@@ -924,13 +924,13 @@ const workflows = [
       },
       {
         label: "Adjust Percentages Any Time",
-        description: "Ownership percentages can be edited freely at any point before approval. The validation check (total must equal 100%) only runs at approval time.",
-        chip: "Validation at Approval",
+        description: "You can freely update each buyer's percentage at any point before the reservation is approved. No restrictions while you are still setting it up.",
+        chip: "Checked at Approval",
         chipColor: "warning",
       },
       {
-        label: "System Validates on Approval",
-        description: "When any admin clicks Approve, the system checks that all ownership percentages sum to exactly 100%. If they do not, approval is blocked and an error is shown.",
+        label: "System Checks on Approval",
+        description: "When an admin clicks Approve, the system verifies that all buyer percentages add up to 100%. If they do not, the approval is blocked and you are shown a message to fix it first.",
       },
       {
         label: "Both Buyers Appear in Contract",
@@ -955,28 +955,28 @@ const workflows = [
         chipColor: "primary",
       },
       {
-        label: "Real Data Already Filled In",
-        description: "Client name, unit number, price, dates, and ownership details are all pre-populated from the database. You are editing the rendered version, not a blank template.",
+        label: "Everything Is Already Filled In",
+        description: "The client's name, unit details, price, dates, and ownership percentages are all pre-filled. You are reading the final contract, not a blank form — just find what you want to change.",
       },
       {
         label: "Make Your Edits",
-        description: "Click anywhere in the text area to edit. You can change clauses, add custom paragraphs, adjust formatting, or correct any detail for this specific client.",
+        description: "Click anywhere in the contract to start editing. Change any sentence, add a paragraph, or correct a detail. It works like editing a Word document.",
       },
       {
-        label: "Save the Override",
-        description: 'Click "Save". The system stores your edited HTML as a per-reservation override. The global template in the Template Manager is completely unchanged.',
-        chip: "This Reservation Only",
+        label: "Save — Only This Client Is Affected",
+        description: 'Click "Save". Your changes apply only to this reservation. Every other client continues to receive the standard contract without any change.',
+        chip: "This Client Only",
         chipColor: "warning",
       },
       {
-        label: "Regenerate the PDF",
-        description: 'Click "Regenerate Contract PDF". A new PDF is generated from your edited HTML. The old PDF is replaced. The contract is now ready for sending.',
+        label: "Generate the Updated PDF",
+        description: 'Click "Regenerate Contract PDF". A fresh PDF is created with your edits applied. The previous version is replaced and the contract is ready to send.',
         chip: "PDF Updated",
         chipColor: "success",
       },
       {
-        label: "Global Template Unaffected",
-        description: "Any future reservations continue to use the global template. Only this specific reservation uses your custom version. You can reset the override at any time.",
+        label: "Revert Any Time",
+        description: "If you change your mind, you can reset this reservation back to the standard contract at any time. No permanent changes are ever made to the standard layout.",
       },
     ],
   },
@@ -996,13 +996,13 @@ const workflows = [
       },
       {
         label: "Select Payment Method & Nationality",
-        description: "Set Payment Method (Cash or Installment) and select the client's Nationality (Egyptian or Non-Egyptian). These two fields, combined with the package, determine the contract template.",
-        chip: "4 Variables Drive Template",
+        description: "Set whether the client pays in full (Cash) or in installments, and select whether the client is Egyptian or Non-Egyptian. Combined with the package, these choices determine which contract is used.",
+        chip: "Automatic Contract Selection",
         chipColor: "warning",
       },
       {
-        label: "System Selects the Contract Template",
-        description: "Based on Package × Payment × Nationality, one of 8 templates is automatically selected (e.g. contract_hotel_gold_cash_egyptian). No manual selection needed.",
+        label: "System Picks the Right Contract",
+        description: "Based on the package, payment method, and nationality, the correct contract is automatically selected and filled in. Nothing needs to be chosen manually.",
         chip: "Auto-Selected",
         chipColor: "success",
       },
@@ -1012,7 +1012,7 @@ const workflows = [
       },
       {
         label: "Upload Bank Account Details",
-        description: "In Documents tab → upload the client's bank account information (required for investment returns / ROI distribution).",
+        description: "In the Documents tab, upload the client's bank account information. This is required so the client can receive their share of the hotel's returns.",
         chip: "Investment Returns",
       },
       {
@@ -1023,7 +1023,7 @@ const workflows = [
       },
       {
         label: "Email Sent with Full Investment Package",
-        description: "On final approval, email is sent with the hotel contract PDF, ROI projections, and maintenance plan all attached.",
+        description: "On final approval, the client automatically receives an email with the signed contract, profit projections, and maintenance plan all attached.",
         chip: "Email Auto-Sent",
         chipColor: "success",
       },
@@ -1045,17 +1045,17 @@ const workflows = [
       },
       {
         label: "Prepare Your Excel File",
-        description: "Prepare an Excel (.xlsx) file with columns: Name, Email, Phone, Password (optional). Each row is one client. No specific template required — just those column headers.",
-        chip: "Name / Email / Phone / Password",
+        description: "Prepare a standard Excel file with your clients' names, emails, and phone numbers. Each row is one client. A password column is optional.",
+        chip: "Name · Email · Phone",
       },
       {
         label: "Upload the File",
         description: "Select your file and upload it. The system reads all rows instantly.",
       },
       {
-        label: "Duplicate Detection Runs Automatically",
-        description: "The system checks every row against existing clients using Name + Email + Phone combined. Any row that matches an existing client is automatically skipped and flagged in the report.",
-        chip: "Auto Deduplication",
+        label: "Duplicates Are Caught Automatically",
+        description: "The system compares every row against existing clients. Any client that already exists is automatically skipped — you will see a clear report of who was added and who was skipped.",
+        chip: "No Manual Checking",
         chipColor: "warning",
       },
       {
@@ -1124,39 +1124,29 @@ const WorkflowExamples = () => (
 // ─── Section 5 · Contract Template System ───────────────────────────────────
 
 const ContractTemplateSystem = () => {
-  const theme = useTheme();
   const prodTemplates = [
-    { type: "Clinic", cash: "contract_clinic_cash", installment: "contract_clinic_installment" },
-    { type: "Shop", cash: "contract_shop_cash", installment: "contract_shop_installment" },
-    { type: "Office", cash: "contract_office_cash", installment: "contract_office_installment" },
+    { type: "Clinic", cash: "Clinic — Cash Payment", installment: "Clinic — Installment Payment" },
+    { type: "Shop", cash: "Shop — Cash Payment", installment: "Shop — Installment Payment" },
+    { type: "Office", cash: "Office — Cash Payment", installment: "Office — Installment Payment" },
   ];
 
   const npmTemplates = [
-    { package: "Gold", payment: "Cash", nationality: "Egyptian", key: "contract_hotel_gold_cash_egyptian" },
-    { package: "Gold", payment: "Cash", nationality: "Non-Egyptian", key: "contract_hotel_gold_cash_nonegyptian" },
-    { package: "Gold", payment: "Installment", nationality: "Egyptian", key: "contract_hotel_gold_installment_egyptian" },
-    { package: "Gold", payment: "Installment", nationality: "Non-Egyptian", key: "contract_hotel_gold_installment_nonegyptian" },
-    { package: "Silver", payment: "Cash", nationality: "Egyptian", key: "contract_hotel_silver_cash_egyptian" },
-    { package: "Silver", payment: "Cash", nationality: "Non-Egyptian", key: "contract_hotel_silver_cash_nonegyptian" },
-    { package: "Silver", payment: "Installment", nationality: "Egyptian", key: "contract_hotel_silver_installment_egyptian" },
-    { package: "Silver", payment: "Installment", nationality: "Non-Egyptian", key: "contract_hotel_silver_installment_nonegyptian" },
+    { package: "Gold", payment: "Cash", nationality: "Egyptian", label: "Gold Package · Cash · Egyptian" },
+    { package: "Gold", payment: "Cash", nationality: "Non-Egyptian", label: "Gold Package · Cash · Non-Egyptian" },
+    { package: "Gold", payment: "Installment", nationality: "Egyptian", label: "Gold Package · Installment · Egyptian" },
+    { package: "Gold", payment: "Installment", nationality: "Non-Egyptian", label: "Gold Package · Installment · Non-Egyptian" },
+    { package: "Silver", payment: "Cash", nationality: "Egyptian", label: "Silver Package · Cash · Egyptian" },
+    { package: "Silver", payment: "Cash", nationality: "Non-Egyptian", label: "Silver Package · Cash · Non-Egyptian" },
+    { package: "Silver", payment: "Installment", nationality: "Egyptian", label: "Silver Package · Installment · Egyptian" },
+    { package: "Silver", payment: "Installment", nationality: "Non-Egyptian", label: "Silver Package · Installment · Non-Egyptian" },
   ];
-
-  const cellSx = {
-    fontFamily: "monospace",
-    fontSize: "0.78rem",
-    bgcolor: "#f1f8e9",
-    color: "#33691e",
-    fontWeight: 600,
-    border: "1px solid #dcedc8",
-  };
 
   return (
     <Fragment>
-      <SectionLabel variant="h4">Contract Template System</SectionLabel>
+      <SectionLabel variant="h4">How Contracts Are Generated</SectionLabel>
 
-      {/* How selection works */}
       <Grid container spacing={3} sx={{ mb: 3 }}>
+        {/* PROD */}
         <Grid item xs={12} md={6}>
           <Paper
             elevation={0}
@@ -1169,37 +1159,44 @@ const ContractTemplateSystem = () => {
               height: "100%",
             }}
           >
-            <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, mb: 2 }}>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, mb: 1.5 }}>
               <Avatar sx={{ bgcolor: "#f57f17", width: 40, height: 40 }}>
                 <BusinessIcon />
               </Avatar>
-              <Typography variant="h6" sx={{ fontWeight: 800, color: "#f57f17" }}>
-                PROD — 6 Templates
-              </Typography>
+              <Box>
+                <Typography variant="h6" sx={{ fontWeight: 800, color: "#f57f17" }}>
+                  Negma Properties (PROD)
+                </Typography>
+                <Typography variant="caption" color="text.secondary">
+                  6 contract layouts — one per unit type and payment method
+                </Typography>
+              </Box>
             </Box>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-              Template is selected by: <strong>Unit Type × Payment Method</strong>
+              The system picks the right contract automatically based on the <strong>unit type</strong> and <strong>payment method</strong> you chose when creating the reservation.
             </Typography>
             <Table size="small">
               <TableHead>
                 <TableRow>
                   <TableCell sx={{ fontWeight: 700, bgcolor: "#fff3e0" }}>Unit Type</TableCell>
-                  <TableCell sx={{ fontWeight: 700, bgcolor: "#fff3e0" }}>Cash</TableCell>
-                  <TableCell sx={{ fontWeight: 700, bgcolor: "#fff3e0" }}>Installment</TableCell>
+                  <TableCell sx={{ fontWeight: 700, bgcolor: "#fff3e0" }}>Cash Payment</TableCell>
+                  <TableCell sx={{ fontWeight: 700, bgcolor: "#fff3e0" }}>Installments</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {prodTemplates.map((row) => (
                   <TableRow key={row.type}>
                     <TableCell sx={{ fontWeight: 700 }}>{row.type}</TableCell>
-                    <TableCell sx={cellSx}>{row.cash}</TableCell>
-                    <TableCell sx={cellSx}>{row.installment}</TableCell>
+                    <TableCell sx={{ fontSize: "0.8rem", color: "#33691e" }}>✓ Ready</TableCell>
+                    <TableCell sx={{ fontSize: "0.8rem", color: "#33691e" }}>✓ Ready</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
           </Paper>
         </Grid>
+
+        {/* NPM */}
         <Grid item xs={12} md={6}>
           <Paper
             elevation={0}
@@ -1212,16 +1209,21 @@ const ContractTemplateSystem = () => {
               height: "100%",
             }}
           >
-            <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, mb: 2 }}>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, mb: 1.5 }}>
               <Avatar sx={{ bgcolor: "#00695c", width: 40, height: 40 }}>
                 <HotelIcon />
               </Avatar>
-              <Typography variant="h6" sx={{ fontWeight: 800, color: "#00695c" }}>
-                NPM — 8 Templates
-              </Typography>
+              <Box>
+                <Typography variant="h6" sx={{ fontWeight: 800, color: "#00695c" }}>
+                  Negma Hotel Properties (NPM)
+                </Typography>
+                <Typography variant="caption" color="text.secondary">
+                  8 contract layouts — one per package, payment, and nationality
+                </Typography>
+              </Box>
             </Box>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-              Template is selected by: <strong>Package × Payment × Nationality</strong>
+              The system picks the right contract automatically based on the <strong>package</strong> (Gold or Silver), <strong>payment method</strong>, and the <strong>client's nationality</strong>.
             </Typography>
             <Table size="small">
               <TableHead>
@@ -1229,12 +1231,11 @@ const ContractTemplateSystem = () => {
                   <TableCell sx={{ fontWeight: 700, bgcolor: "#b2dfdb" }}>Package</TableCell>
                   <TableCell sx={{ fontWeight: 700, bgcolor: "#b2dfdb" }}>Payment</TableCell>
                   <TableCell sx={{ fontWeight: 700, bgcolor: "#b2dfdb" }}>Nationality</TableCell>
-                  <TableCell sx={{ fontWeight: 700, bgcolor: "#b2dfdb" }}>Template Key</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {npmTemplates.map((row) => (
-                  <TableRow key={row.key}>
+                  <TableRow key={row.label}>
                     <TableCell>
                       <Chip
                         label={row.package}
@@ -1245,8 +1246,8 @@ const ContractTemplateSystem = () => {
                           fontSize: "0.72rem",
                           bgcolor: row.package === "Gold" ? "#fff8e1" : "#eceff1",
                           color: row.package === "Gold" ? "#f9a825" : "#607d8b",
-                          borderColor: row.package === "Gold" ? "#f9a825" : "#90a4ae",
                           border: "1px solid",
+                          borderColor: row.package === "Gold" ? "#f9a825" : "#90a4ae",
                         }}
                       />
                     </TableCell>
@@ -1267,9 +1268,6 @@ const ContractTemplateSystem = () => {
                         <PublicIcon sx={{ fontSize: 14, color: "text.secondary" }} />
                         {row.nationality}
                       </Box>
-                    </TableCell>
-                    <TableCell sx={{ ...cellSx, bgcolor: "#e0f7fa", color: "#006064", borderColor: "#b2ebf2" }}>
-                      {row.key}
                     </TableCell>
                   </TableRow>
                 ))}
@@ -1296,11 +1294,11 @@ const ContractTemplateSystem = () => {
                   <TableChartIcon sx={{ fontSize: 20 }} />
                 </Avatar>
                 <Typography variant="subtitle1" sx={{ fontWeight: 800, color: "#1565c0" }}>
-                  Global Template Edit
+                  Editing the Standard Contract
                 </Typography>
               </Box>
               <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.7 }}>
-                Editing a template in the <strong>Template Manager</strong> affects <strong>all future reservations</strong> that use that template. The change is stored in the database and becomes the new default for all contracts of that type. Use this to update standard clauses, pricing terms, or legal language globally.
+                Changes made in the <strong>Template Manager</strong> apply to <strong>all future reservations</strong> of that type. Use this when you want to update standard clauses, terms, or legal language for everyone going forward.
               </Typography>
             </CardContent>
           </Card>
@@ -1320,11 +1318,11 @@ const ContractTemplateSystem = () => {
                   <EditIcon sx={{ fontSize: 20 }} />
                 </Avatar>
                 <Typography variant="subtitle1" sx={{ fontWeight: 800, color: "#e65100" }}>
-                  Per-Reservation Override
+                  Editing One Client's Contract
                 </Typography>
               </Box>
               <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.7 }}>
-                Editing contract HTML inside a <strong>specific reservation</strong> creates an override stored only for that reservation. The global template is completely untouched. When regenerating the PDF, the system uses the override if it exists, otherwise falls back to the global template. Overrides can be cleared to revert.
+                Editing the contract inside a <strong>specific reservation</strong> only affects that one client. All other reservations continue to use the standard contract. You can revert back to the standard at any time.
               </Typography>
             </CardContent>
           </Card>
@@ -1337,17 +1335,17 @@ const ContractTemplateSystem = () => {
 // ─── Section 6 · Quick Reference Table ──────────────────────────────────────
 
 const quickRefRows = [
-  { task: "Create a new unit / project", where: "Units Module → New Unit / New Project", who: "Operation Admin" },
+  { task: "Add a new unit or project", where: "Units → New Unit or New Project", who: "Operation Admin" },
   { task: "Create a new reservation", where: "Reservations → New Reservation", who: "Operation Admin" },
-  { task: "Approve a reservation", where: "Reservations → Open Reservation → Approve", who: "Assigned Admin (per chain)" },
-  { task: "Upload down payment cheque", where: "Reservation Detail → Documents Tab", who: "Operation / Finance Admin" },
-  { task: "Edit the global contract template", where: "Template Manager → Select Template → Edit", who: "Operation Admin" },
-  { task: "Customize contract for one client", where: "Reservation Detail → Documents → Edit Contract HTML", who: "Operation Admin" },
-  { task: "Add a single client", where: "Users → New User", who: "Any Admin" },
-  { task: "Bulk import clients from Excel", where: "Users → Upload Excel", who: "Any Admin" },
-  { task: "Assign a broker to an admin", where: "Admins → Select Admin → Brokers Tab", who: "Super Admin" },
-  { task: "View field session logs", where: "Activity / Sessions Module", who: "Operation / Customer Support" },
-  { task: "Mark reservation as Sold", where: "Reservation Detail → Submit Documents & Mark as Sold", who: "Finance Admin" },
+  { task: "Approve a reservation", where: "Open the reservation → click Approve", who: "Assigned Admin" },
+  { task: "Upload payment documents", where: "Open the reservation → Documents tab", who: "Operation / Finance Admin" },
+  { task: "Edit the standard contract for all clients", where: "Template Manager → select a template → Edit", who: "Operation Admin" },
+  { task: "Edit a contract for one specific client", where: "Open the reservation → Documents → Edit Contract", who: "Operation Admin" },
+  { task: "Add a new client", where: "Users → New User", who: "Any Admin" },
+  { task: "Import many clients from Excel", where: "Users → Upload Excel", who: "Any Admin" },
+  { task: "Assign a broker to a supervisor", where: "Admins → select admin → Brokers tab", who: "Super Admin" },
+  { task: "View sales team activity", where: "Activity / Sessions section", who: "Operation / Customer Support" },
+  { task: "Mark a reservation as Sold", where: "Open the reservation → Mark as Sold", who: "Finance Admin" },
 ];
 
 const QuickReference = () => (
