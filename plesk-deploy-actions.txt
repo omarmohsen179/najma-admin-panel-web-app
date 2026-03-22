@@ -1,13 +1,12 @@
-# Copy `git repos\negma-admin\build` → `admin.npm.khalidelewa.com` (site home).
-# First line clears subfolders + files in the site folder; then robocopy mirrors `build` here.
-# `/MIR` also deletes anything on the site that is not in `build`.
+# Plesk → Git → Additional deployment actions (one line per site).
+# Repo CWD is usually: ...\git repos\negma-admin
 #
-# Paste ONE line that matches where Plesk runs the action (see deploy log working directory).
+# Local: build both folders, commit, push:
+#   npm run build:envs
+#   git add build-negma build-npm && git commit -m "chore: env builds" && git push
 #
-# A) Runs from Home\admin.npm.khalidelewa.com (your earlier logs looked like this):
-for /d %p in (*) do @rmdir /S /Q "%p" 2>nul & del /F /Q * 2>nul & robocopy "..\git repos\negma-admin\build" . /MIR /E /NFL /NDL /NJH /NJS /nc /ns /np & if errorlevel 8 (exit /b 1) else (exit /b 0)
+# --- npm env → admin.npm.khalidelewa.com (from build-npm) ---
+robocopy build-npm "..\..\admin.npm.khalidelewa.com" /MIR /E /NFL /NDL /NJH /NJS /nc /ns /np & if errorlevel 8 (exit /b 1) else (exit /b 0)
 #
-# B) Runs from Home\git repos\negma-admin (repo root after Git pull):
-# robocopy build "..\..\admin.npm.khalidelewa.com" /MIR /E /NFL /NDL /NJH /NJS /nc /ns /np & if errorlevel 8 (exit /b 1) else (exit /b 0)
-#
-# If (A) fails with path not found, try (B). Point document root to where index.html lands (often site root or httpdocs).
+# --- negma env (paste only on the negma subdomain’s Git deploy; edit folder name if yours differs) ---
+robocopy build-negma "..\..\admin.negma.khalidelewa.com" /MIR /E /NFL /NDL /NJH /NJS /nc /ns /np & if errorlevel 8 (exit /b 1) else (exit /b 0)
