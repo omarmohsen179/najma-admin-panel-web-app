@@ -326,6 +326,28 @@ const Sales = () => {
         field: "PhoneNumber",
         captionEn: "Phone Number",
       },
+      {
+        caption: "Lead Status",
+        field: "LeadStatus",
+        captionEn: "Lead Status",
+        calculateDisplayValue: (row) => {
+          const status = row?.LeadStatus ?? row?.leadStatus;
+          if (status === undefined || status === null) return "";
+          return LEAD_STATUS_LABELS[status] ?? String(status);
+        },
+      },
+      {
+        caption: "Note",
+        field: "Note",
+        captionEn: "Note",
+        calculateDisplayValue: (row) => row?.Note ?? row?.note ?? "",
+      },
+      {
+        caption: "Assigned To",
+        field: "LeadOwnerName",
+        captionEn: "Assigned To",
+        calculateDisplayValue: (row) => row?.LeadOwnerName ?? row?.leadOwnerName ?? "—",
+      },
     ];
   }, []);
 

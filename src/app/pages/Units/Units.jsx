@@ -906,29 +906,34 @@ const Units = () => {
   // Block button cell template
   const blockButtonCellTemplate = useCallback((container, options) => {
     container.innerHTML = "";
+    const isAvailable = options.data?.UnitStatus === 0;
     const button = document.createElement("button");
     button.textContent = "Block";
+    button.disabled = !isAvailable;
     button.style.cssText = `
       padding: 4px 12px;
-      background: #dc3545;
+      background: ${isAvailable ? "#dc3545" : "#ccc"};
       color: white;
       border: none;
       border-radius: 4px;
-      cursor: pointer;
+      cursor: ${isAvailable ? "pointer" : "not-allowed"};
       font-size: 12px;
       transition: background 0.2s;
+      opacity: ${isAvailable ? "1" : "0.6"};
     `;
-    button.addEventListener("mouseenter", () => {
-      button.style.background = "#c82333";
-    });
-    button.addEventListener("mouseleave", () => {
-      button.style.background = "#dc3545";
-    });
-    button.addEventListener("click", (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      handleBlockClick(options.data);
-    });
+    if (isAvailable) {
+      button.addEventListener("mouseenter", () => {
+        button.style.background = "#c82333";
+      });
+      button.addEventListener("mouseleave", () => {
+        button.style.background = "#dc3545";
+      });
+      button.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        handleBlockClick(options.data);
+      });
+    }
     container.appendChild(button);
   }, [handleBlockClick]);
 

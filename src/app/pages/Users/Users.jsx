@@ -1,5 +1,6 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { DELETE_USER, EDIT_USER, GET_USERS, UPLOAD_EXCEL } from "./Api";
+import { GET_SALES, LEAD_STATUS_LABELS } from "../Sales/Api";
 import PageLayout from "app/components/PageLayout/PageLayout";
 import CrudMUI from "app/components/CrudTable/CrudMUI";
 import {
@@ -15,10 +16,24 @@ import {
 } from "@mui/material";
 import { CloudUpload as CloudUploadIcon } from "@mui/icons-material";
 
+const LEAD_STATUS_OPTIONS = [
+  { Id: 0, CategoryName: "Interested" },
+  { Id: 1, CategoryName: "Not Interested" },
+  { Id: 2, CategoryName: "Call Him Back" },
+];
+
 const Users = () => {
   const [uploadExcelOpen, setUploadExcelOpen] = useState(false);
+  const [salesUsers, setSalesUsers] = useState([]);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadResult, setUploadResult] = useState(null);
+
+  // Load sales users for dropdown
+  useEffect(() => {
+    GET_SALES({ PageIndex: 1, PageSize: 1000 })
+      .then((res) => setSalesUsers(res.Data || res.data || []))
+      .catch(() => {});
+  }, []);
 
   // Handle Excel upload button click
   const handleUploadExcelClick = useCallback(() => {
@@ -144,8 +159,39 @@ const Users = () => {
         field: "Password",
         captionEn: "Password",
       },
+      {
+        caption: "Lead Status",
+        field: "LeadStatus",
+        captionEn: "Lead Status",
+        type: "select",
+        data: LEAD_STATUS_OPTIONS,
+        display: "CategoryName",
+        displayEn: "CategoryName",
+        value: "Id",
+        calculateDisplayValue: (row) => {
+          const status = row?.LeadStatus ?? row?.leadStatus;
+          if (status === undefined || status === null) return "";
+          return LEAD_STATUS_LABELS[status] ?? String(status);
+        },
+      },
+      {
+        caption: "Note",
+        field: "Note",
+        captionEn: "Note",
+      },
+      {
+        caption: "Assigned To",
+        field: "LeadOwnerId",
+        captionEn: "Assigned To",
+        type: "select",
+        data: salesUsers,
+        display: "Name",
+        displayEn: "Name",
+        value: "Id",
+        calculateDisplayValue: (row) => row?.LeadOwnerName ?? row?.leadOwnerName ?? "—",
+      },
     ];
-  }, []);
+  }, [salesUsers]);
 
   // Render Upload Excel Dialog
   const renderUploadExcelDialog = () => {

@@ -1,0 +1,16 @@
+# negma-backend → clinic-api + npm-api (Plesk, Windows)
+# Repo: https://github.com/omarmohsen179/negma-backend.git
+#
+# CWD after Git pull: Home\git repos\negma-backend
+#
+# /XD wwwroot — never sync or mirror-purge destination wwwroot on either site.
+#
+# --- ONE command: production → clinic-api, npm build → npm-api ---
+(robocopy "publish\production" "..\..\clinic-api.khalidelewa.com" /MIR /E /XD wwwroot /NFL /NDL /NJH /NJS /nc /ns /np & if errorlevel 8 (exit /b 1) else (exit /b 0)) && (robocopy "publish\npm" "..\..\npm-api.khalidelewa.com" /MIR /E /XD wwwroot /NFL /NDL /NJH /NJS /nc /ns /np & if errorlevel 8 (exit /b 1) else (exit /b 0))
+#
+# --- Split (if you ever need them separately) ---
+# robocopy "publish\production" "..\..\clinic-api.khalidelewa.com" /MIR /E /XD wwwroot /NFL /NDL /NJH /NJS /nc /ns /np & if errorlevel 8 (exit /b 1) else (exit /b 0)
+# robocopy "publish\npm" "..\..\npm-api.khalidelewa.com" /MIR /E /XD wwwroot /NFL /NDL /NJH /NJS /nc /ns /np & if errorlevel 8 (exit /b 1) else (exit /b 0)
+#
+# Non-mirror fallback (never deletes extra files on server; may leave old DLLs):
+# (robocopy "publish\production" "..\..\clinic-api.khalidelewa.com" /E /IS /IT /XD wwwroot /NFL /NDL /NJH /NJS /nc /ns /np & if errorlevel 8 (exit /b 1) else (exit /b 0)) && (robocopy "publish\npm" "..\..\npm-api.khalidelewa.com" /E /IS /IT /XD wwwroot /NFL /NDL /NJH /NJS /nc /ns /np & if errorlevel 8 (exit /b 1) else (exit /b 0))

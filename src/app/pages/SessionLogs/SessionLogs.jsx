@@ -341,6 +341,16 @@ const SessionLogs = () => {
         field: "ClientName",
       },
       {
+        caption: "Broker",
+        captionEn: "Broker",
+        field: "BrokerName",
+        cellRender: ({ value }) => (
+          <Typography variant="body2" color="text.primary">
+            {value || "—"}
+          </Typography>
+        ),
+      },
+      {
         caption: "Start Time",
         captionEn: "Start Time",
         field: "StartTime",
@@ -414,12 +424,12 @@ const SessionLogs = () => {
     const data = feedbackSession?.OrientationFeedbacks ?? [];
 
     return async (params = {}) => {
-      const pageIndex = params.PageIndex ?? 0;
-      const fallbackPageSize = data.length || 1;
-      const pageSize = params.PageSize ?? fallbackPageSize;
+      // MasterTable sends 1-based PageIndex; convert to 0-based for slice
+      const pageIndex = Math.max(0, (params.PageIndex ?? 1) - 1);
+      const pageSize = params.PageSize ?? (data.length || 1);
       const start = pageIndex * pageSize;
-      const end = pageSize ? start + pageSize : undefined;
-      const pageData = pageSize ? data.slice(start, end) : data;
+      const end = start + pageSize;
+      const pageData = data.slice(start, end);
 
       return {
         Data: pageData,
@@ -640,6 +650,86 @@ const SessionLogs = () => {
                   : "N/A"}
               </Typography>
             </Grid>
+
+            {/* Session Feedback */}
+            {selectedSession.SessionFeedback && (
+              <>
+                <Grid item xs={12}>
+                  <Typography variant="h6" gutterBottom sx={{ mt: 1 }}>
+                    Session Feedback
+                  </Typography>
+                </Grid>
+
+                <Grid item xs={6}>
+                  <Typography variant="subtitle2" color="textSecondary">Overall Rating</Typography>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                    {[1,2,3,4,5].map(i => (
+                      <span key={i} style={{ color: i <= selectedSession.SessionFeedback.Rating ? '#f5a623' : '#ddd', fontSize: '1.2rem' }}>★</span>
+                    ))}
+                    <Typography variant="body2" sx={{ ml: 0.5 }}>
+                      ({selectedSession.SessionFeedback.Rating}/5)
+                    </Typography>
+                  </Box>
+                </Grid>
+
+                <Grid item xs={6}>
+                  <Typography variant="subtitle2" color="textSecondary">Client Satisfaction</Typography>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                    {[1,2,3,4,5].map(i => (
+                      <span key={i} style={{ color: i <= selectedSession.SessionFeedback.ClientSatisfaction ? '#f5a623' : '#ddd', fontSize: '1.2rem' }}>👍</span>
+                    ))}
+                    <Typography variant="body2" sx={{ ml: 0.5 }}>
+                      ({selectedSession.SessionFeedback.ClientSatisfaction}/5)
+                    </Typography>
+                  </Box>
+                </Grid>
+
+                <Grid item xs={12}>
+                  <Typography variant="subtitle2" color="textSecondary">Detailed Feedback</Typography>
+                  <Typography variant="body1">{selectedSession.SessionFeedback.Content || "N/A"}</Typography>
+                </Grid>
+
+                {selectedSession.SessionFeedback.Notes && (
+                  <Grid item xs={12}>
+                    <Typography variant="subtitle2" color="textSecondary">Session Notes</Typography>
+                    <Typography variant="body1">{selectedSession.SessionFeedback.Notes}</Typography>
+                  </Grid>
+                )}
+
+                {selectedSession.SessionFeedback.LeadStatus != null && (
+                  <Grid item xs={6}>
+                    <Typography variant="subtitle2" color="textSecondary">Lead Status</Typography>
+                    <Chip
+                      label={selectedSession.SessionFeedback.LeadStatus === 0 ? 'Interested' : selectedSession.SessionFeedback.LeadStatus === 1 ? 'Not Interested' : 'Call Him Back'}
+                      color={selectedSession.SessionFeedback.LeadStatus === 0 ? 'success' : selectedSession.SessionFeedback.LeadStatus === 1 ? 'error' : 'warning'}
+                      size="small"
+                    />
+                  </Grid>
+                )}
+
+                {selectedSession.SessionFeedback.ClientNote && (
+                  <Grid item xs={12}>
+                    <Typography variant="subtitle2" color="textSecondary">Client Note</Typography>
+                    <Typography variant="body1">{selectedSession.SessionFeedback.ClientNote}</Typography>
+                  </Grid>
+                )}
+
+                {selectedSession.SessionFeedback.Outcome && (
+                  <Grid item xs={6}>
+                    <Typography variant="subtitle2" color="textSecondary">Outcome</Typography>
+                    <Typography variant="body1">{selectedSession.SessionFeedback.Outcome}</Typography>
+                  </Grid>
+                )}
+              </>
+            )}
+
+            {!selectedSession.SessionFeedback && selectedSession.Status === 1 && (
+              <Grid item xs={12}>
+                <Typography variant="body2" color="textSecondary" sx={{ fontStyle: 'italic' }}>
+                  No feedback submitted for this session.
+                </Typography>
+              </Grid>
+            )}
           </Grid>
         </DialogContent>
         <DialogActions>
@@ -696,12 +786,12 @@ const SessionLogs = () => {
                 gutterBottom
               >
                 Period:{" "}
-                {analytics.FromDate
-                  ? new Date(analytics.FromDate).toLocaleDateString()
+                {analytics.fromDate
+                  ? new Date(analytics.fromDate).toLocaleDateString()
                   : "All time"}{" "}
                 -{" "}
-                {analytics.ToDate
-                  ? new Date(analytics.ToDate).toLocaleDateString()
+                {analytics.toDate
+                  ? new Date(analytics.toDate).toLocaleDateString()
                   : "Present"}
               </Typography>
             </Grid>
@@ -713,7 +803,7 @@ const SessionLogs = () => {
                     👥 User Statistics
                   </Typography>
                   <Typography variant="h4" color="primary">
-                    {analytics.TotalUsers}
+                    {analytics.totalUsers}
                   </Typography>
                   <Typography variant="body2" color="textSecondary">
                     Total Active Users
@@ -737,7 +827,7 @@ const SessionLogs = () => {
                   >
                     <Typography variant="body2">Total:</Typography>
                     <Typography variant="h6">
-                      {analytics.TotalOrientationSessions}
+                      {analytics.totalOrientationSessions}
                     </Typography>
                   </Box>
                   <Box
@@ -749,7 +839,7 @@ const SessionLogs = () => {
                   >
                     <Typography variant="body2">Completed:</Typography>
                     <Typography variant="body1" color="success.main">
-                      {analytics.CompletedOrientationSessions}
+                      {analytics.completedOrientationSessions}
                     </Typography>
                   </Box>
                   <Box
@@ -757,7 +847,7 @@ const SessionLogs = () => {
                   >
                     <Typography variant="body2">Active:</Typography>
                     <Typography variant="body1" color="warning.main">
-                      {analytics.ActiveOrientationSessions}
+                      {analytics.activeOrientationSessions}
                     </Typography>
                   </Box>
                 </CardContent>
@@ -779,7 +869,7 @@ const SessionLogs = () => {
                   >
                     <Typography variant="body2">Total:</Typography>
                     <Typography variant="h6">
-                      {analytics.TotalMeetingSessions}
+                      {analytics.totalMeetingSessions}
                     </Typography>
                   </Box>
                   <Box
@@ -791,7 +881,7 @@ const SessionLogs = () => {
                   >
                     <Typography variant="body2">Completed:</Typography>
                     <Typography variant="body1" color="success.main">
-                      {analytics.CompletedMeetingSessions}
+                      {analytics.completedMeetingSessions}
                     </Typography>
                   </Box>
                   <Box
@@ -799,7 +889,7 @@ const SessionLogs = () => {
                   >
                     <Typography variant="body2">Active:</Typography>
                     <Typography variant="body1" color="warning.main">
-                      {analytics.ActiveMeetingSessions}
+                      {analytics.activeMeetingSessions}
                     </Typography>
                   </Box>
                 </CardContent>
@@ -821,7 +911,7 @@ const SessionLogs = () => {
                   >
                     <Typography variant="body2">Orientation:</Typography>
                     <Typography variant="body1">
-                      {formatDuration(analytics.AverageOrientationDuration)}
+                      {formatDuration(analytics.averageOrientationDuration)}
                     </Typography>
                   </Box>
                   <Box
@@ -829,7 +919,7 @@ const SessionLogs = () => {
                   >
                     <Typography variant="body2">Meeting:</Typography>
                     <Typography variant="body1">
-                      {formatDuration(analytics.AverageMeetingDuration)}
+                      {formatDuration(analytics.averageMeetingDuration)}
                     </Typography>
                   </Box>
                 </CardContent>
@@ -851,7 +941,7 @@ const SessionLogs = () => {
                   >
                     <Typography variant="body2">Orientation:</Typography>
                     <Typography variant="body1">
-                      {analytics.TotalOrientationFeedbacks}
+                      {analytics.totalOrientationFeedbacks}
                     </Typography>
                   </Box>
                   <Box
@@ -859,7 +949,7 @@ const SessionLogs = () => {
                   >
                     <Typography variant="body2">Meeting:</Typography>
                     <Typography variant="body1">
-                      {analytics.TotalMeetingFeedbacks}
+                      {analytics.totalMeetingFeedbacks}
                     </Typography>
                   </Box>
                 </CardContent>
@@ -889,7 +979,7 @@ const SessionLogs = () => {
         <DialogTitle>
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
             <PersonIcon />
-            User Statistics: {userStats.UserFullName}
+            User Statistics: {userStats.userFullName}
           </Box>
         </DialogTitle>
         <DialogContent>
@@ -900,7 +990,7 @@ const SessionLogs = () => {
                 color="textSecondary"
                 gutterBottom
               >
-                User ID: {userStats.UserId}
+                User ID: {userStats.userId}
               </Typography>
             </Grid>
 
@@ -911,16 +1001,16 @@ const SessionLogs = () => {
                     📚 Orientations
                   </Typography>
                   <Typography variant="body2">
-                    Total: {userStats.TotalOrientationSessions}
+                    Total: {userStats.totalOrientationSessions}
                   </Typography>
                   <Typography variant="body2">
-                    Completed: {userStats.CompletedOrientationSessions}
+                    Completed: {userStats.completedOrientationSessions}
                   </Typography>
                   <Typography variant="body2">
-                    Active: {userStats.ActiveOrientationSessions}
+                    Active: {userStats.activeOrientationSessions}
                   </Typography>
                   <Typography variant="body2">
-                    Feedbacks: {userStats.OrientationFeedbackCount}
+                    Feedbacks: {userStats.orientationFeedbackCount}
                   </Typography>
                 </CardContent>
               </Card>
@@ -933,16 +1023,19 @@ const SessionLogs = () => {
                     🤝 Meetings
                   </Typography>
                   <Typography variant="body2">
-                    Total: {userStats.TotalMeetingSessions}
+                    Total: {userStats.totalMeetingSessions}
                   </Typography>
                   <Typography variant="body2">
-                    Completed: {userStats.CompletedMeetingSessions}
+                    Completed: {userStats.completedMeetingSessions}
                   </Typography>
                   <Typography variant="body2">
-                    Active: {userStats.ActiveMeetingSessions}
+                    Active: {userStats.activeMeetingSessions}
                   </Typography>
                   <Typography variant="body2">
-                    Feedbacks: {userStats.MeetingFeedbackCount}
+                    Feedbacks: {userStats.meetingFeedbackCount}
+                  </Typography>
+                  <Typography variant="body2">
+                    Session Feedbacks: {userStats.sessionFeedbackCount ?? 0}
                   </Typography>
                 </CardContent>
               </Card>
@@ -957,7 +1050,7 @@ const SessionLogs = () => {
                 Total Session Time
               </Typography>
               <Typography variant="h6" color="success.main">
-                {formatDuration(userStats.TotalSessionTime)}
+                {formatDuration(userStats.totalSessionTime)}
               </Typography>
             </Grid>
 
@@ -966,7 +1059,7 @@ const SessionLogs = () => {
                 Average Duration
               </Typography>
               <Typography variant="h6" color="info.main">
-                {formatDuration(userStats.AverageSessionDuration)}
+                {formatDuration(userStats.averageSessionDuration)}
               </Typography>
             </Grid>
           </Grid>
