@@ -262,7 +262,7 @@ export const REGENERATE_CONTRACT = async (id) => {
 };
 
 export const RESEND_CONTRACT_EMAIL = async (id) => {
-  return await REQUEST({ method: "GET", url: `Test/test-reservation-email/${id}` });
+  return await REQUEST({ method: "POST", url: `Test/test-reservation-email/${id}` });
 };
 
 // Helper function to convert status number to string
