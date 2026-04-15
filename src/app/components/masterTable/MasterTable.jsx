@@ -420,7 +420,7 @@ function MasterTable({
           allowUpdating={allowUpdate}
         >
           {" "}
-          <Popup title="Items" showTitle={true} width={700} height={525} />
+          <Popup title="Items" showTitle={true} width={800} height={600} />
           <Form>
             <Item itemType="group" colCount={2} colSpan={2}>
               {colAttributes?.length > 0 &&

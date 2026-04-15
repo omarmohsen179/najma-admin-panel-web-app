@@ -91,12 +91,19 @@ export const ADD_LEADS_LIST = async (leads) => {
   });
 };
 
-// Update lead (note and/or leadStatus)
+// Update lead (all fields)
 export const UPDATE_LEAD = async (leadUserId, data) => {
   return await REQUEST({
     method: "PUT",
     url: `Leads/${leadUserId}`,
     data: {
+      ...(data.name !== undefined && { name: data.name }),
+      ...(data.email !== undefined && { email: data.email }),
+      ...(data.phoneNumber !== undefined && { phoneNumber: data.phoneNumber }),
+      ...(data.address !== undefined && { address: data.address }),
+      ...(data.dateOfBirth !== undefined && { dateOfBirth: data.dateOfBirth }),
+      ...(data.occupation !== undefined && { occupation: data.occupation }),
+      ...(data.monthlyIncome !== undefined && { monthlyIncome: data.monthlyIncome }),
       ...(data.note !== undefined && { note: data.note }),
       ...(data.leadStatus !== undefined && { leadStatus: data.leadStatus }),
     },

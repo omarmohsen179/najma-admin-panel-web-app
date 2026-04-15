@@ -58,7 +58,7 @@ export default function Templates() {
     }
   };
 
-  const currentEnv = process.env.REACT_APP_ENV; // 'negma' = PROD build, 'npm' = NPM build
+  const currentEnv = process.env.REACT_APP_ENV; // 'najma' = PROD build, 'npm' = NPM build
   const isNpm = currentEnv === 'npm';
 
   const prodTemplates = templates.filter(t => t.environment === 'prod');

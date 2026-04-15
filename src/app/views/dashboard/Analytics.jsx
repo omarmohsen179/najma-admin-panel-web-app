@@ -131,7 +131,7 @@ const HeroBanner = () => {
         <Box sx={{ display: "flex", gap: 1.5, flexWrap: "wrap", mb: 3 }}>
           <Chip
             icon={<BusinessIcon sx={{ color: "#fff !important" }} />}
-            label="Negma Properties (PROD)"
+            label="Najma Properties (PROD)"
             sx={{
               background: "rgba(255,255,255,0.18)",
               color: "#fff",
@@ -143,7 +143,7 @@ const HeroBanner = () => {
           />
           <Chip
             icon={<HotelIcon sx={{ color: "#fff !important" }} />}
-            label="Negma Hotel Properties (NPM)"
+            label="Najma Hotel Properties (NPM)"
             sx={{
               background: "rgba(255,255,255,0.18)",
               color: "#fff",
@@ -230,7 +230,7 @@ const EnvironmentsSection = () => (
               <Box>
                 <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                   <Typography variant="h6" sx={{ fontWeight: 800, color: "#1565c0" }}>
-                    Negma Properties
+                    Najma Properties
                   </Typography>
                   <Chip label="PROD" size="small" sx={{ bgcolor: "#1565c0", color: "#fff", fontWeight: 700, fontSize: "0.72rem" }} />
                 </Box>
@@ -324,7 +324,7 @@ const EnvironmentsSection = () => (
               <Box>
                 <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                   <Typography variant="h6" sx={{ fontWeight: 800, color: "#e65100" }}>
-                    Negma Hotel Properties
+                    Najma Hotel Properties
                   </Typography>
                   <Chip label="NPM" size="small" sx={{ bgcolor: "#e65100", color: "#fff", fontWeight: 700, fontSize: "0.72rem" }} />
                 </Box>
@@ -360,7 +360,7 @@ const EnvironmentsSection = () => (
                     variant="body2"
                     sx={{ fontWeight: 700, color: "#e65100", fontFamily: "monospace", fontSize: "0.85rem" }}
                   >
-                    admin.negma.khalidelewa.com
+                    admin.najma.khalidelewa.com
                   </Typography>
                 </Box>
               </Box>
@@ -386,7 +386,7 @@ const EnvironmentsSection = () => (
                     variant="body2"
                     sx={{ fontWeight: 700, color: "#e65100", fontFamily: "monospace", fontSize: "0.85rem" }}
                   >
-                    negma.khalidelewa.com
+                    najma.khalidelewa.com
                   </Typography>
                 </Box>
               </Box>
@@ -1165,7 +1165,7 @@ const ContractTemplateSystem = () => {
               </Avatar>
               <Box>
                 <Typography variant="h6" sx={{ fontWeight: 800, color: "#f57f17" }}>
-                  Negma Properties (PROD)
+                  Najma Properties (PROD)
                 </Typography>
                 <Typography variant="caption" color="text.secondary">
                   6 contract layouts — one per unit type and payment method
@@ -1215,7 +1215,7 @@ const ContractTemplateSystem = () => {
               </Avatar>
               <Box>
                 <Typography variant="h6" sx={{ fontWeight: 800, color: "#00695c" }}>
-                  Negma Hotel Properties (NPM)
+                  Najma Hotel Properties (NPM)
                 </Typography>
                 <Typography variant="caption" color="text.secondary">
                   8 contract layouts — one per package, payment, and nationality
@@ -1437,7 +1437,7 @@ export default function Analytics() {
       <QuickReference />
       <Box sx={{ mt: 6, mb: 2, textAlign: "center" }}>
         <Typography variant="caption" color="text.disabled">
-          Negma Real Estate Sales Management Platform · Admin Panel Reference Guide
+          Najma Real Estate Sales Management Platform · Admin Panel Reference Guide
         </Typography>
       </Box>
     </ContentBox>

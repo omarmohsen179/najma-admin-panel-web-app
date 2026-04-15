@@ -18,6 +18,7 @@ import {
   DialogActions,
   Button,
   Box,
+  Grid,
   Typography,
   CircularProgress,
   TextField,
@@ -33,6 +34,13 @@ const Sales = () => {
   const [selectedLeadIds, setSelectedLeadIds] = useState([]);
   const [editLeadOpen, setEditLeadOpen] = useState(false);
   const [editingLead, setEditingLead] = useState(null);
+  const [editName, setEditName] = useState("");
+  const [editEmail, setEditEmail] = useState("");
+  const [editPhone, setEditPhone] = useState("");
+  const [editAddress, setEditAddress] = useState("");
+  const [editDateOfBirth, setEditDateOfBirth] = useState("");
+  const [editOccupation, setEditOccupation] = useState("");
+  const [editMonthlyIncome, setEditMonthlyIncome] = useState("");
   const [editNote, setEditNote] = useState("");
   const [editLeadStatus, setEditLeadStatus] = useState(LEAD_STATUS.Interested);
   const [isUpdatingLead, setIsUpdatingLead] = useState(false);
@@ -181,10 +189,18 @@ const Sales = () => {
     ];
   }, [handleViewClick, handleEditClick]);
 
-  // Open edit lead dialog (note & status)
+  // Open edit lead dialog (all fields)
   const handleEditLeadClick = useCallback((row) => {
     const lead = row?.data ?? row;
     setEditingLead(lead);
+    setEditName(lead?.Name ?? lead?.name ?? "");
+    setEditEmail(lead?.Email ?? lead?.email ?? "");
+    setEditPhone(lead?.PhoneNumber ?? lead?.phoneNumber ?? "");
+    setEditAddress(lead?.Address ?? lead?.address ?? "");
+    const dob = lead?.DateOfBirth ?? lead?.dateOfBirth ?? "";
+    setEditDateOfBirth(dob ? new Date(dob).toISOString().split("T")[0] : "");
+    setEditOccupation(lead?.Occupation ?? lead?.occupation ?? "");
+    setEditMonthlyIncome(lead?.MonthlyIncome ?? lead?.monthlyIncome ?? "");
     setEditNote(lead?.note ?? lead?.Note ?? "");
     setEditLeadStatus(
       lead?.leadStatus !== undefined && lead?.leadStatus !== null
@@ -199,6 +215,13 @@ const Sales = () => {
   const handleCloseEditLead = useCallback(() => {
     setEditLeadOpen(false);
     setEditingLead(null);
+    setEditName("");
+    setEditEmail("");
+    setEditPhone("");
+    setEditAddress("");
+    setEditDateOfBirth("");
+    setEditOccupation("");
+    setEditMonthlyIncome("");
     setEditNote("");
     setEditLeadStatus(LEAD_STATUS.Interested);
   }, []);
@@ -209,7 +232,17 @@ const Sales = () => {
     if (!leadId) return;
     try {
       setIsUpdatingLead(true);
-      await UPDATE_LEAD(leadId, { note: editNote, leadStatus: editLeadStatus });
+      await UPDATE_LEAD(leadId, {
+        name: editName || undefined,
+        email: editEmail || undefined,
+        phoneNumber: editPhone || undefined,
+        address: editAddress || undefined,
+        dateOfBirth: editDateOfBirth || undefined,
+        occupation: editOccupation || undefined,
+        monthlyIncome: editMonthlyIncome ? Number(editMonthlyIncome) : undefined,
+        note: editNote,
+        leadStatus: editLeadStatus,
+      });
       alert("Lead updated successfully.");
       handleCloseEditLead();
       setViewLeadsRefreshKey((k) => k + 1);
@@ -219,7 +252,7 @@ const Sales = () => {
     } finally {
       setIsUpdatingLead(false);
     }
-  }, [editingLead, editNote, editLeadStatus]);
+  }, [editingLead, editName, editEmail, editPhone, editAddress, editDateOfBirth, editOccupation, editMonthlyIncome, editNote, editLeadStatus]);
 
   // Column attributes for sales leads (view popup)
   const leadsColumnAttributes = useMemo(() => {
@@ -247,6 +280,27 @@ const Sales = () => {
         captionEn: "Phone Number",
       },
       {
+        caption: "Address",
+        field: "Address",
+        captionEn: "Address",
+      },
+      {
+        caption: "Date Of Birth",
+        field: "DateOfBirth",
+        captionEn: "Date Of Birth",
+        type: "date",
+      },
+      {
+        caption: "Occupation",
+        field: "Occupation",
+        captionEn: "Occupation",
+      },
+      {
+        caption: "Monthly Income",
+        field: "MonthlyIncome",
+        captionEn: "Monthly Income",
+      },
+      {
         caption: "Note",
         field: "note",
         captionEn: "Note",
@@ -256,6 +310,7 @@ const Sales = () => {
         caption: "Lead Status",
         field: "leadStatus",
         captionEn: "Lead Status",
+        widthRatio: 150,
         calculateDisplayValue: (row) => {
           const status = row?.leadStatus ?? row?.LeadStatus;
           if (status === undefined || status === null) return "";
@@ -428,52 +483,49 @@ const Sales = () => {
     );
   };
 
-  // Edit single lead (note & status) dialog
+  // Edit single lead dialog (all fields)
   const renderEditLeadDialog = () => (
-    <Dialog open={editLeadOpen} onClose={handleCloseEditLead} maxWidth="sm" fullWidth>
-      <DialogTitle>Edit Lead – Note &amp; Status</DialogTitle>
+    <Dialog open={editLeadOpen} onClose={handleCloseEditLead} maxWidth="md" fullWidth>
+      <DialogTitle>Lead Details</DialogTitle>
       <DialogContent>
-        <Box sx={{ display: "flex", flexDirection: "column", gap: 2, pt: 1 }}>
-          <TextField
-            label="Note"
-            multiline
-            rows={3}
-            value={editNote}
-            onChange={(e) => setEditNote(e.target.value)}
-            fullWidth
-            variant="outlined"
-          />
-          <TextField
-            select
-            label="Lead Status"
-            value={editLeadStatus}
-            onChange={(e) => setEditLeadStatus(Number(e.target.value))}
-            fullWidth
-            variant="outlined"
-          >
-            <MenuItem value={LEAD_STATUS.Interested}>
-              {LEAD_STATUS_LABELS[LEAD_STATUS.Interested]}
-            </MenuItem>
-            <MenuItem value={LEAD_STATUS.NotInterested}>
-              {LEAD_STATUS_LABELS[LEAD_STATUS.NotInterested]}
-            </MenuItem>
-            <MenuItem value={LEAD_STATUS.CallHimBack}>
-              {LEAD_STATUS_LABELS[LEAD_STATUS.CallHimBack]}
-            </MenuItem>
-          </TextField>
-        </Box>
+        <Grid container spacing={2} sx={{ pt: 1 }}>
+          <Grid item xs={12} sm={6}>
+            <TextField label="Name" value={editName} onChange={(e) => setEditName(e.target.value)} fullWidth variant="outlined" />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField label="Email" value={editEmail} onChange={(e) => setEditEmail(e.target.value)} fullWidth variant="outlined" type="email" />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField label="Phone" value={editPhone} onChange={(e) => setEditPhone(e.target.value)} fullWidth variant="outlined" />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField label="Address" value={editAddress} onChange={(e) => setEditAddress(e.target.value)} fullWidth variant="outlined" />
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <TextField label="Date of Birth" value={editDateOfBirth} onChange={(e) => setEditDateOfBirth(e.target.value)} fullWidth variant="outlined" type="date" InputLabelProps={{ shrink: true }} />
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <TextField label="Occupation" value={editOccupation} onChange={(e) => setEditOccupation(e.target.value)} fullWidth variant="outlined" />
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <TextField label="Monthly Income" value={editMonthlyIncome} onChange={(e) => setEditMonthlyIncome(e.target.value)} fullWidth variant="outlined" type="number" />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField label="Note" multiline rows={3} value={editNote} onChange={(e) => setEditNote(e.target.value)} fullWidth variant="outlined" />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField select label="Lead Status" value={editLeadStatus} onChange={(e) => setEditLeadStatus(Number(e.target.value))} fullWidth variant="outlined">
+              <MenuItem value={LEAD_STATUS.Interested}>{LEAD_STATUS_LABELS[LEAD_STATUS.Interested]}</MenuItem>
+              <MenuItem value={LEAD_STATUS.NotInterested}>{LEAD_STATUS_LABELS[LEAD_STATUS.NotInterested]}</MenuItem>
+              <MenuItem value={LEAD_STATUS.CallHimBack}>{LEAD_STATUS_LABELS[LEAD_STATUS.CallHimBack]}</MenuItem>
+            </TextField>
+          </Grid>
+        </Grid>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleCloseEditLead} color="inherit">
-          Cancel
-        </Button>
-        <Button
-          onClick={handleSaveLead}
-          color="primary"
-          variant="contained"
-          disabled={isUpdatingLead}
-          startIcon={isUpdatingLead ? <CircularProgress size={20} color="inherit" /> : null}
-        >
+        <Button onClick={handleCloseEditLead} color="inherit">Cancel</Button>
+        <Button onClick={handleSaveLead} color="primary" variant="contained" disabled={isUpdatingLead}
+          startIcon={isUpdatingLead ? <CircularProgress size={20} color="inherit" /> : null}>
           {isUpdatingLead ? "Saving..." : "Save"}
         </Button>
       </DialogActions>

@@ -22,6 +22,6 @@ yarn-error.log*
 
 .vs/
 .env.*
-.env.negma
+.env.najma
 .env.npm
 

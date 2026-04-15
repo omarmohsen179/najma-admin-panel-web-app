@@ -1,7 +1,7 @@
-# negma-backend → clinic-api + npm-api (Plesk, Windows)
-# Repo: https://github.com/omarmohsen179/negma-backend.git
+# najma-backend → clinic-api + npm-api (Plesk, Windows)
+# Repo: https://github.com/omarmohsen179/najma-backend.git
 #
-# CWD after Git pull: Home\git repos\negma-backend
+# CWD after Git pull: Home\git repos\najma-backend
 #
 # /XD wwwroot — never sync or mirror-purge destination wwwroot on either site.
 #

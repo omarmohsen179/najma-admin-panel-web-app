@@ -18,7 +18,8 @@ import {
   CardContent,
   Divider,
   Alert,
-  MenuItem
+  MenuItem,
+  Autocomplete
 } from '@mui/material';
 import {
   PictureAsPdf as PdfIcon,
@@ -36,8 +37,8 @@ import {
   RestartAlt as RestartAltIcon,
   DeleteOutline as DeleteOutlineIcon
 } from '@mui/icons-material';
-import Autocomplete from '@mui/material/Autocomplete';
 import { ImageBaseUrl } from 'app/services/config';
+import COUNTRIES from 'app/constants/countries';
 import DocumentPdf from './DocumentPdf';
 import DocumentImage from './DocumentImage';
 import { GET_UNITS } from 'app/pages/Units/Api';
@@ -1867,7 +1868,14 @@ const ReservationDetailsDialog = React.memo(({
               <TextField fullWidth type="date" label="Date of birth" value={editClientForm.dateOfBirth ?? ''} onChange={(e) => handleEditClientField('dateOfBirth', e.target.value)} InputLabelProps={{ shrink: true }} />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField fullWidth label="Nationality" value={editClientForm.nationality ?? ''} onChange={(e) => handleEditClientField('nationality', e.target.value)} />
+              <Autocomplete
+                options={COUNTRIES}
+                value={editClientForm.nationality || null}
+                onChange={(_, newValue) => handleEditClientField('nationality', newValue ?? '')}
+                autoHighlight
+                fullWidth
+                renderInput={(params) => <TextField {...params} fullWidth label="Nationality" />}
+              />
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField fullWidth label="ID Number" value={editClientForm.idNumber ?? ''} onChange={(e) => handleEditClientField('idNumber', e.target.value)} />
